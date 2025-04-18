@@ -10,7 +10,7 @@
       margin: 0;
       padding: 0;
     }
-    .chatbox {
+    .container {
       max-width: 600px;
       margin: 50px auto;
       background: white;
@@ -46,26 +46,97 @@
       font-size: 16px;
       cursor: pointer;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-<div class="chatbox">
+<div class="container" id="paySection">
+  <h2 id="welcomeTitle"></h2>
+  <p id="payText"></p>
+  <p id="instructionText"></p>
+  <a href="https://paypal.me/sidhumosewala599/2" target="_blank">
+    <button id="payBtn"></button>
+  </a>
+  <br>
+  <button onclick="checkPayment()" id="confirmBtn"></button>
+</div>
+
+<div class="container hidden" id="chatSection">
   <h2 id="girlName">...</h2>
   <div class="chat" id="chatWindow">
-    <div><strong><span id="namePlaceholder"></span>:</strong> Ciao amore... sono qui solo per te.</div>
+    <div><strong><span id="namePlaceholder"></span>:</strong> <span id="firstMessage"></span></div>
   </div>
   <div class="input">
-    <input type="text" id="userInput" placeholder="Scrivi qualcosa...">
-    <button onclick="sendMessage()">Invia</button>
+    <input type="text" id="userInput" placeholder="" />
+    <button onclick="sendMessage()" id="sendBtn"></button>
   </div>
 </div>
 
 <script>
+  const lang = navigator.language.startsWith("en") ? "en" : "it";
+
+  const texts = {
+    it: {
+      welcomeTitle: "Benvenuto!",
+      payText: "Per iniziare a chattare con la tua ragazza virtuale, effettua un pagamento di 2€.",
+      instructionText: "Appena completato, torna qui e premi 'Ho pagato'.",
+      payBtn: "Paga ora con PayPal",
+      confirmBtn: "Ho pagato",
+      chatTitle: "Chat con",
+      firstMessage: "Ciao amore... sono qui solo per te.",
+      userPlaceholder: "Scrivi qualcosa...",
+      sendBtn: "Invia",
+      botReply: "Sei così dolce... raccontami di più."
+    },
+    en: {
+      welcomeTitle: "Welcome!",
+      payText: "To start chatting with your virtual girlfriend, please make a €2 payment.",
+      instructionText: "After payment, return here and press 'I have paid'.",
+      payBtn: "Pay now with PayPal",
+      confirmBtn: "I have paid",
+      chatTitle: "Chat with",
+      firstMessage: "Hi love... I’m here just for you.",
+      userPlaceholder: "Type something...",
+      sendBtn: "Send",
+      botReply: "You're so sweet... tell me more."
+    }
+  };
+
+  const t = texts[lang];
+
+  document.getElementById("welcomeTitle").textContent = t.welcomeTitle;
+  document.getElementById("payText").textContent = t.payText;
+  document.getElementById("instructionText").textContent = t.instructionText;
+  document.getElementById("payBtn").textContent = t.payBtn;
+  document.getElementById("confirmBtn").textContent = t.confirmBtn;
+  document.getElementById("userInput").placeholder = t.userPlaceholder;
+  document.getElementById("sendBtn").textContent = t.sendBtn;
+
   const names = ["Sofia", "Valentina", "Isabella", "Aurora", "Luna", "Juliette", "Mia", "Aria", "Freya", "Amira"];
   const girlName = names[Math.floor(Math.random() * names.length)];
-  document.getElementById("girlName").textContent = "Chat con " + girlName;
+
+  document.getElementById("girlName").textContent = `${t.chatTitle} ${girlName}`;
   document.getElementById("namePlaceholder").textContent = girlName;
+  document.getElementById("firstMessage").textContent = t.firstMessage;
+
+  window.onload = function () {
+    if (localStorage.getItem("hasPaid") === "true") {
+      showChat();
+    }
+  };
+
+  function checkPayment() {
+    localStorage.setItem("hasPaid", "true");
+    showChat();
+  }
+
+  function showChat() {
+    document.getElementById("paySection").classList.add("hidden");
+    document.getElementById("chatSection").classList.remove("hidden");
+  }
 
   function sendMessage() {
     const input = document.getElementById("userInput");
@@ -73,13 +144,13 @@
     if (message === "") return;
 
     const chatWindow = document.getElementById("chatWindow");
+
     const userMsg = document.createElement("div");
-    userMsg.innerHTML = `<strong>Tu:</strong> ${message}`;
+    userMsg.innerHTML = `<strong>You:</strong> ${message}`;
     chatWindow.appendChild(userMsg);
 
-    // Risposta automatica
     const reply = document.createElement("div");
-    reply.innerHTML = `<strong>${girlName}:</strong> Mi piace quando mi parli così...`;
+    reply.innerHTML = `<strong>${girlName}:</strong> ${t.botReply}`;
     chatWindow.appendChild(reply);
 
     input.value = "";
