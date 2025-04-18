@@ -54,13 +54,14 @@
 <body>
 
 <div class="container" id="paySection">
-  <h2 id="welcomeTitle">Benvenuto!</h2>
-  <p id="payText">Per iniziare, invia un piccolo contributo:</p>
+  <h2 id="welcomeTitle"></h2>
+  <p id="payText"></p>
   <a href="https://paypal.me/sidhumosewala599/2" target="_blank">
-    <button id="payBtn">Paga con PayPal</button>
+    <button id="payBtn"></button>
   </a>
-  <br><br>
-  <button onclick="checkPayment()" id="confirmBtn">Ho già pagato</button>
+  <p id="enterCodeText"></p>
+  <input type="text" id="secretCodeInput" placeholder="Codice segreto">
+  <button onclick="checkCode()">OK</button>
 </div>
 
 <div class="container hidden" id="chatSection">
@@ -69,83 +70,68 @@
     <div><strong><span id="namePlaceholder"></span>:</strong> <span id="firstMessage"></span></div>
   </div>
   <div class="input">
-    <input type="text" id="userInput" placeholder="" />
-    <button onclick="sendMessage()" id="sendBtn"></button>
+    <input type="text" id="userInput" placeholder="">
+    <button onclick="sendMessage()">Invia</button>
   </div>
 </div>
 
 <script>
-  // Lingua automatica
   const lang = navigator.language.startsWith("en") ? "en" : "it";
-  const strings = {
+  const translations = {
     it: {
-      title: "Chat Romantica",
-      welcome: "Benvenuto!",
-      pay: "Per iniziare, invia un piccolo contributo:",
-      payBtn: "Paga con PayPal",
-      confirm: "Ho già pagato",
-      input: "Scrivi qualcosa...",
-      send: "Invia",
-      msg: "Ciao amore... sono qui solo per te.",
-      nameList: ["Sofia", "Valentina", "Isabella", "Aurora", "Luna", "Juliette", "Mia", "Aria", "Freya", "Amira"]
+      welcomeTitle: "Benvenuto nella Chat Romantica",
+      payText: "Per continuare, effettua il pagamento di 2€:",
+      payBtn: "Paga ora",
+      enterCodeText: "Dopo il pagamento, inserisci il codice ricevuto:",
+      invalidCode: "Codice errato. Riprova.",
+      girlName: "La tua ragazza virtuale",
+      firstMessage: "Ciao amore... sono qui solo per te.",
+      inputPlaceholder: "Scrivi qualcosa...",
+      sendBtn: "Invia"
     },
     en: {
-      title: "Romantic Chat",
-      welcome: "Welcome!",
-      pay: "To begin, please make a small contribution:",
-      payBtn: "Pay with PayPal",
-      confirm: "I already paid",
-      input: "Write something...",
-      send: "Send",
-      msg: "Hi love... I'm here just for you.",
-      nameList: ["Sophia", "Valentina", "Isabella", "Aurora", "Luna", "Juliette", "Mia", "Aria", "Freya", "Amira"]
+      welcomeTitle: "Welcome to Romantic Chat",
+      payText: "To continue, please pay €2:",
+      payBtn: "Pay Now",
+      enterCodeText: "After payment, enter the code you received:",
+      invalidCode: "Invalid code. Try again.",
+      girlName: "Your virtual girlfriend",
+      firstMessage: "Hi love... I'm here just for you.",
+      inputPlaceholder: "Type something...",
+      sendBtn: "Send"
     }
   };
 
-  const txt = strings[lang];
-  document.title = txt.title;
-  document.getElementById("welcomeTitle").textContent = txt.welcome;
-  document.getElementById("payText").textContent = txt.pay;
-  document.getElementById("payBtn").textContent = txt.payBtn;
-  document.getElementById("confirmBtn").textContent = txt.confirm;
-  document.getElementById("userInput").placeholder = txt.input;
-  document.getElementById("sendBtn").textContent = txt.send;
-  document.getElementById("firstMessage").textContent = txt.msg;
+  const t = translations[lang];
+  document.getElementById("welcomeTitle").innerText = t.welcomeTitle;
+  document.getElementById("payText").innerText = t.payText;
+  document.getElementById("payBtn").innerText = t.payBtn;
+  document.getElementById("enterCodeText").innerText = t.enterCodeText;
+  document.getElementById("girlName").innerText = t.girlName;
+  document.getElementById("firstMessage").innerText = t.firstMessage;
+  document.getElementById("userInput").placeholder = t.inputPlaceholder;
 
-  function getRandomName() {
-    const names = txt.nameList;
-    return names[Math.floor(Math.random() * names.length)];
+  function checkCode() {
+    const code = document.getElementById("secretCodeInput").value.trim();
+    if (code === "romantic2024") {
+      document.getElementById("paySection").classList.add("hidden");
+      document.getElementById("chatSection").classList.remove("hidden");
+    } else {
+      alert(t.invalidCode);
+    }
   }
 
-  document.getElementById("namePlaceholder").textContent = getRandomName();
-
-  // Simulazione invio messaggio
   function sendMessage() {
     const input = document.getElementById("userInput");
-    const text = input.value.trim();
-    if (text !== "") {
+    const msg = input.value.trim();
+    if (msg) {
       const div = document.createElement("div");
-      div.innerHTML = `<strong>Tu:</strong> ${text}`;
+      div.innerHTML = `<strong>Tu:</strong> ${msg}`;
       document.getElementById("chatWindow").appendChild(div);
       input.value = "";
     }
   }
-
-  // Salvataggio e verifica pagamento
-  function checkPayment() {
-    localStorage.setItem("hasPaid", "true");
-    showChat();
-  }
-
-  function showChat() {
-    document.getElementById("paySection").classList.add("hidden");
-    document.getElementById("chatSection").classList.remove("hidden");
-  }
-
-  // Mostra chat se già pagato
-  if (localStorage.getItem("hasPaid") === "true") {
-    showChat();
-  }
 </script>
+
 </body>
 </html>
