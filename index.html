@@ -62,5 +62,30 @@
 </div>
 
 <script>
-  const names = ["Sofia", Valentina", "Isabella", "Aurora", "Luna", "Juliette", "Mia", "Aria", "Freya", "Amira"];
-  const
+  const names = ["Sofia", "Valentina", "Isabella", "Aurora", "Luna", "Juliette", "Mia", "Aria", "Freya", "Amira"];
+  const girlName = names[Math.floor(Math.random() * names.length)];
+  document.getElementById("girlName").textContent = "Chat con " + girlName;
+  document.getElementById("namePlaceholder").textContent = girlName;
+
+  function sendMessage() {
+    const input = document.getElementById("userInput");
+    const message = input.value.trim();
+    if (message === "") return;
+
+    const chatWindow = document.getElementById("chatWindow");
+    const userMsg = document.createElement("div");
+    userMsg.innerHTML = `<strong>Tu:</strong> ${message}`;
+    chatWindow.appendChild(userMsg);
+
+    // Risposta automatica
+    const reply = document.createElement("div");
+    reply.innerHTML = `<strong>${girlName}:</strong> Mi piace quando mi parli così...`;
+    chatWindow.appendChild(reply);
+
+    input.value = "";
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+</script>
+
+</body>
+</html>
