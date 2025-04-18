@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Romantica</title>
+  <style>
+    body {
+      background: #fff0f5;
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .chatbox {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .chat {
+      height: 300px;
+      overflow-y: auto;
+      border: 1px solid #eee;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+    }
+    .input {
+      display: flex;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-left: 10px;
+      padding: 10px 20px;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="chatbox">
+  <h2 id="girlName">...</h2>
+  <div class="chat" id="chatWindow">
+    <div><strong><span id="namePlaceholder"></span>:</strong> Ciao amore... sono qui solo per te.</div>
+  </div>
+  <div class="input">
+    <input type="text" id="userInput" placeholder="Scrivi qualcosa...">
+    <button onclick="sendMessage()">Invia</button>
+  </div>
+</div>
+
+<script>
+  const names = ["Sofia", Valentina", "Isabella", "Aurora", "Luna", "Juliette", "Mia", "Aria", "Freya", "Amira"];
+  const
